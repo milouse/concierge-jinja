@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 
@@ -32,15 +32,38 @@ class Tox(TestCommand):
         sys.exit(errno)
 
 
-try:
-    import multiprocessing
-    assert multiprocessing
-except ImportError:
-    pass
+with open("README.rst", "rt") as readme_fp:
+    long_description = readme_fp.read().strip()
 
+REQUIREMENTS = (
+    "concierge",
+    "jinja2"
+)
 
 setuptools.setup(
-    setup_requires=["pbr>=1.8"],
-    tests_require=["tox"],
-    cmdclass={'test': Tox},
-    pbr=True)
+    name="concierge_jinja",
+    version="0.2",
+    description="Maintainable SSH config",
+    long_description=long_description,
+    url="https://github.com/9seconds/concierge-jinja",
+    author="Sergey Arkhipov",
+    author_email="serge@aerialsounds.org",
+    maintainer="Sergey Arkhipov",
+    maintainer_email="serge@aerialsounds.org",
+    license="MIT",
+    packages=setuptools.find_packages(exclude=["tests"]),
+    install_requires=REQUIREMENTS,
+    entry_points={
+        "concierge.templater": [
+            "jinja = concierge_jinja.templater:Jinja2Templater"
+        ]
+    },
+    classifiers=[
+        "Intended Audience :: Information Technology",
+        "Intended Audience :: System Administrators",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5"
+    ])
